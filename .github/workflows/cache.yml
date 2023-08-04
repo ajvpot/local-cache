@@ -1,0 +1,36 @@
+name: cache
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Create test file
+        run: |
+          echo hello > test
+
+      - name: Fail on cache miss test
+        uses: ./
+        continue-on-error: true
+        with:
+          fail-on-cache-miss: true
+          key: does-not-exist
+          path: test
+
+      - name: Cache a file
+        uses: ./
+        with:
+          key: test
+          path: test
+
+
