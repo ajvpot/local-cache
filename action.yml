@@ -37,13 +37,14 @@ runs:
       - name: Setup env
         shell: bash
         run: |
+          echo "CACHE_DIR=$GITHUB_WORKSPACE/../_cache" >> $GITHUB_ENV
           echo "CACHE_PATH=$GITHUB_WORKSPACE/../_cache/${{ inputs.key }}" >> $GITHUB_ENV
 
       - name: Check if cache exists
         shell: bash
         id: check-cache
         run: |
-          ls -lah $CACHE_PATH && echo "cache-hit=true" >> $GITHUB_OUTPUT || true
+          ls -lah "$CACHE_PATH" && echo "cache-hit=true" >> "$GITHUB_OUTPUT" || true
 
       - if: ${{ inputs.fail-on-cache-miss == 'true' && steps.check-cache.outputs.cache-hit != 'true' }}
         name: Fail on cache miss
@@ -58,7 +59,8 @@ runs:
         with:
           main: |
             # restore cache
-            ls $CACHE_PATH && cpio -i -vd < $CACHE_PATH || echo "No cache to restore."
+            ls "$CACHE_PATH" && cpio -i -vd < "$CACHE_PATH" || echo "No cache to restore."
           post: |
             # save cache
-            find ${{inputs.path}} -print -depth | cpio -o -v > $CACHE_PATH
+            mkdir -p "$CACHE_DIR"
+            find ${{inputs.path}} -print -depth | cpio -o -v > "$CACHE_PATH"
