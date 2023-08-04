@@ -45,7 +45,7 @@ runs:
         run: |
           ls -lah $CACHE_PATH && echo "cache-hit=true" >> $GITHUB_OUTPUT || true
 
-      - if: ${{ inputs.fail-on-cache-miss && steps.check-cache.outputs.cache-hit != 'true' }}
+      - if: ${{ inputs.fail-on-cache-miss == 'true' && steps.check-cache.outputs.cache-hit != 'true' }}
         name: Fail on cache miss
         shell: bash
         run: |
