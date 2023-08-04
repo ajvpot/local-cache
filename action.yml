@@ -54,7 +54,7 @@ runs:
           exit 1 
 
       - if: ${{ inputs.lookup-only != 'true' }}
-        uses: pyTooling/Actions/with-post-step@v0.4.5
+        uses: ./with-post-step
         name: Restore cache
         with:
           main: |
