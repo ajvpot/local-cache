@@ -38,7 +38,7 @@ runs:
         shell: bash
         run: |
           echo "CACHE_DIR=$GITHUB_WORKSPACE/../_cache" >> $GITHUB_ENV
-          echo "CACHE_PATH=$GITHUB_WORKSPACE/../_cache/${{ inputs.key }}" >> $GITHUB_ENV
+          echo "CACHE_PATH=$GITHUB_WORKSPACE/../_cache/${{ inputs.key }}.cpio" >> $GITHUB_ENV
 
       - name: Check if cache exists
         shell: bash

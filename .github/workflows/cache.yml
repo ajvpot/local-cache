@@ -21,11 +21,18 @@ jobs:
 
       - name: Fail on cache miss test
         uses: ./
+        id: fail-on-cache-miss-test
         continue-on-error: true
         with:
           fail-on-cache-miss: true
           key: does-not-exist
           path: test
+
+      - name: Fail if test failed
+        if: ${{ steps.fail-on-cache-miss-test.outcome == 'success' }}
+        run: |
+          echo "::error title=⛔ error hint::Test failed"
+          exit 1
 
       - name: Cache a file
         uses: ./
